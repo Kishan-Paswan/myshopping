@@ -1,0 +1,244 @@
+{% extends 'shopapp/base.html'%} 
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<style>
+   form input {
+      outline-color: rgb(72, 72, 221);
+      border: 1px solid grey;
+      border-radius: 4px;
+      font-size: 14px;
+   }
+
+   .user {
+      font-size:18px;
+      font-weight: 500;
+   }
+
+   .change-address-btn {
+      border: 1px solid rgb(66, 66, 228);
+      background-color: white;
+      font-size: small;
+      padding: 4px 12px;
+      color: rgb(43, 43, 233);
+      border-radius: 4px;
+      display: none; 
+   }
+   .cursor{
+      cursor: pointer;
+      font-size: 20px;
+      color: black;
+   }
+   .customin{
+      padding: 0px 24px;
+   }
+   .customin input{
+      width: 100%;
+    padding: 8px;
+    border: 1px solid grey;
+    border-radius: 4px;
+    outline-color: rgb(83, 83, 199);
+    margin-top: 10px;
+   }
+</style>
+
+<div class="container-lg">
+   <form action="{% url 'checkout' %}">
+     <div class="row pt-3">
+       <div class="col-7">
+         <div class="row border rounded">
+            <div class="col-12 text-center bg-primary rounded-top text-white">
+               <h4 style="font-weight: 600;">Delivery Address</h4>
+            </div>
+           
+            <div class="row">
+               <div class="col-12">
+                  <form id="deliveryAddressForm" method="post" action="{% url 'place_order'%}">
+                     {% csrf_token %}
+                     {% for x in address %}
+                        <div class=" row  border-bottom">
+                        <div class="col-7"> <input class="ms-3  mt-3 radio" type="radio" name="delivery_address" id="{{x.id}}">
+                            <span class=" text-capitalize user">{{x.name}}</span> <span class="text-capitalize">{{x.mobile_number}}</span></div>  
+                           <div class="text-end col-5 "><button  type="submit" class=" mt-3  change-address-btn"  
+                                       data-toggle="modal" data-target="#exampleModalCenter">Change</button></div>  
+                                <input type="hidden"  name="addressId"  value="{{x.id}}">              
+                             <p class="ps-3">{{x.house_number}} {{x.landmark}}, {{x.area}} ,{{x.city}}, {{x.state}} ,{{x.country}}-{{x.pincode}}</p>
+                        </div>
+                        </form>
+
+
+                        
+                     {% endfor %}
+
+                     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title " id="exampleModalLongTitle">Edit Address</h5>
+                              <p class="cursor" data-dismiss="modal" >
+                                 <i class="fa-solid fa-xmark"></i>
+                              </p>
+                            </div>
+                            <div class="modal-body">
+                              <form method="POST"  action="">
+                                 {% csrf_token %}
+                                 <div class="row  customin  ">
+                                    <div class="col-12">
+                                         <div class=" ">
+                                            <div class="row">
+                                                <div class="col-6 text-center">
+                                                    <input type="text" name="name" value="{{change.name}}" placeholder="Name">
+                                                </div>
+                                                <div class="col-6">
+                                                    <input type="text" name="mobile_number" placeholder="Mobile number">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6 text-center">
+                                                    <input type="text" name="pincode" placeholder="Pincode">
+                                                </div>
+                                                <div class="col-6">
+                                                    <input type="text" name="house_number" placeholder="House/Building no.">
+                                                </div>
+                                            </div>
+                                            <div class="row ">
+                                                <div class="col-12">
+                                                   
+                                                    <input type="text" name="landmark" placeholder="Landmark" class="full-width-input">
+                                                </div>
+                                            </div>
+                                            <div class="row ">
+                                                <div class="col-6 text-center">
+                                                    <input type="text" name="area" placeholder="Area">
+                                                </div>
+                                                <div class="col-6">
+                                                    <input type="text" name="city" placeholder="City">
+                                                </div>
+                                            </div>
+                                            <div class="row ">
+                                              <div class="col-6 text-center">
+                                                  <input type="text" name="state" placeholder="State">
+                                              </div>
+                                              <div class="col-6">
+                                                  <input type="text" name="country" placeholder="Country">
+                                              </div>
+                                          </div>
+                                         
+                                               <input type="hidden" name="user"  value="{{user.id}}">
+                                               <input class="mt-3 rounded-3 bg-primary" type="submit"  value="Submit ">
+                                        </div>
+                                    </div>
+                                    
+                                 </div>
+                                 
+                               </form>
+                            </div>
+                           
+                          </div>
+                        </div>
+                      </div>
+
+
+
+
+
+
+                     <!-- add address -->
+                     <div class="row mt-3 mb-3">
+                        <div class="col-12 ms-3">
+                           <a style="text-decoration: none;" href="{% url 'add_address'%}">
+                              <span class="text-primary"><i class="fa-sharp fa-solid fa-plus"></i>   Add address</span>
+                           </a>  
+                        </div>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+       </div>
+       <div class="col-4  ms-5">
+         <div class=" ">
+            <div class="border p-3 shadow-sm ">    <h4  class="text-center  pb-2" style="color: #2f2d51;">Your Order</h4>
+                           <div class="row border-bottom ">
+                               <span class="col-6 pb-2 meracolor mfont " >Product</span>
+                               <span class="col-6 text-end pb-2 infont">Total</span>
+                           </div>
+                           {% for x in cartid %}
+                           <div class="row">
+                            
+                               <div class="col-lg-6">
+                                 <input type="hidden" id="qty{{x.id}}" value="{{x.qty}}">
+                                 <input type="hidden" id="price{{x.id}}" value="{{x.productId.product_price}}">
+                                 <span class="sfont">{{x.productId.product_name }} x {{ x.qty }}</span>
+                               </div>
+                               <div class="col-lg-6 text-end">
+                                 <span class="sfont" id="totalprice{{x.id}}"></span>
+                               </div>
+                           </div>
+   
+                           <script>
+                             var qty= parseInt(document.getElementById('qty{{x.id}}').value)
+                             var price= parseInt(document.getElementById('price{{x.id}}').value)
+                             document.getElementById('totalprice{{x.id}}').innerHTML= qty*price
+                           </script>
+                           {% endfor %}
+                        
+                         
+                           <div class="row">
+                            <span class="col-6 mt-2  mfont ">Total Amount</span>
+                            <span class="col-6 mt-2 text-end infont">₹{{ totalAmount }}</span>
+                           </div>
+   
+                         
+               <div>
+   
+               </div>
+   
+   
+           
+           </div>
+           <!-- ----payment---------- -->
+           <div class="border shadow-sm pb-3 mt-1">
+                  <div class="row "> 
+                   <h5 class="text-center pt-2" style="color: #2f2d51;">Payment</h5>
+                  </div>
+   
+                  <div class="row">
+                         <div class="col-12 ms-3 sfont">Payment Mode</div>
+                        
+                  </div>
+                  <div class="row pt-1 infont">
+                   <div class="col-12 ms-4 ">
+                     <span >Online(UPI/Debit/Credit/Net Banking)</span>
+                     <input class="infont" type="radio"  name="paymentMode"  value="UPI">           
+                    </div>
+                   <div class="col-12 ms-4 ">
+                     <span>Cash on Delivery</span>
+                     <input class="infont" type="radio"  name="paymentMode" value="Net Banking">
+                   </div>
+                  </div>
+                  
+                  <div class="row mt-3 ">
+                     
+                   <div class="col-6 ms-3 sfont">Apply Coupon </div>
+                  
+                    <input class="col-4 " style="border: 1px solid gray; border-radius: 6px;" type="text" placeholder="coupon code">
+                   
+                  </div> 
+   
+                  <div class="row mt-4">
+                   <div class=" text-center"> <input class="btn btn-outline-primary infont " type="submit" value="checkout"></div>
+                  </div>
+                 
+           </div>
+             
+           </div>
+       </div>
+     </div>
+
+     </form>
+</div>
+
+
+
+{% endblock %}

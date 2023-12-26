@@ -1,0 +1,191 @@
+{% extends 'shopapp/base.html'%} 
+
+{% block content %}
+
+<!-- css -->
+<style>
+  :root{
+    --main-color:#2f2d51;
+}
+
+.meracolor{
+   
+   color: var(--main-color);
+}
+.mfont{
+  
+  font-size: 16px;
+  font-weight: 700;
+}
+.sfont{
+  color:gray;
+  font-weight: 600;
+  font-size: 14px;
+}
+.infont{
+  color: var(--main-color);
+  font-size: 16px;
+  font-weight: 500;
+}
+</style>
+<header class="py-8 py-md-10" style="background-image: none;">
+    <div class="container text-center py-xl-2">
+        <h4 class=" fw-semi-bold mt-2 " style="color: #2f2d51;">Shop Checkout</h4>
+     </div>
+</header>
+
+<div class="container">
+    <div class="row">
+          
+      
+
+        
+         
+        <!-- New billing address -->
+        <div class="col-8 ">
+           <form action="{% url 'checkout' %}" method='POST'>
+
+            {% csrf_token %}
+
+            <div class=" border p-4 shadow-sm">
+                <h4 class="text-center meracolor"> Billing Details</h4>
+                
+                <div class="row mb-3">
+                    <label class=" col-12 infont" for="">Fullname</label>
+                    <div class="col-6"><input type="text" name="first_name" class="form-control"  placeholder="First name"></div>
+                    <div class="col-6"><input type="text" name="last_name" class="form-control" placeholder="Last name"></div>
+                </div>
+                <div class="row mb-3">
+                    <label class=" col-12 infont" for="">Address</label>
+                    <div class="col-6"><input type="text" name="house_number" class="form-control" placeholder="Flat/House no./Building/"></div>
+                    <div class="col-6"><input type="text" name="area" class="form-control" placeholder="Area/Street/village"></div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-6">
+                    <label class=" infont" for="">Landmark</label>
+                    <div class=""><input type="text" name="landmark" class="form-control" placeholder="E.g near place"></div>
+                  </div>
+                  <div class="col-6">
+                    <label class=" infont" for="">Pincode</label>
+                    <div class=""><input type="text" name="pincode" class="form-control" placeholder="6 digits pincode"></div>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                      <label class=" infont" for="">City</label>
+                      <div class=""><input type="text" name="city" class="form-control" placeholder="enter your city"></div>
+                    </div>
+                    <div class="col-6">
+                      <label class=" infont" for="">State</label>
+                      <div class=""><input type="text" name="state" class="form-control" placeholder="enter your state"></div>
+                    </div>
+                    <input type="hidden" name="user" value="{{user.id}}">
+                   
+                    <input type="hidden" name="CartData" value="{{cp}}">
+                    
+                  </div>
+                  <div class="text-center row text-center ">
+                     <div class="text-center"> <a href="{% url 'cart' %}"  class="btn btn-outline-danger  " 
+                      >Back</a></div>
+                    
+                   </div>
+                
+                 
+            </div>
+          
+            
+           
+        
+        </div>
+     
+        <!-- cart total amount -->
+        <div class="col-4 ">
+         <div class="border p-3 shadow-sm ">    <h4  class="text-center  pb-2" style="color: #2f2d51;">Your Order</h4>
+                        <div class="row border-bottom ">
+                            <span class="col-6 pb-2 meracolor mfont " >Product</span>
+                            <span class="col-6 text-end pb-2 infont">Total</span>
+                        </div>
+                        {% for x in cartid %}
+                        <div class="row">
+                         
+                            <div class="col-lg-6">
+                              <input type="hidden" id="qty{{x.id}}" value="{{x.qty}}">
+                              <input type="hidden" id="price{{x.id}}" value="{{x.productId.product_price}}">
+                              <span class="sfont">{{x.productId.product_name }} x {{ x.qty }}</span>
+                            </div>
+                            <div class="col-lg-6 text-end">
+                              <span class="sfont" id="totalprice{{x.id}}"></span>
+                            </div>
+                        </div>
+
+                        <script>
+                          var qty= parseInt(document.getElementById('qty{{x.id}}').value)
+                          var price= parseInt(document.getElementById('price{{x.id}}').value)
+                          document.getElementById('totalprice{{x.id}}').innerHTML= qty*price
+                        </script>
+                        {% endfor %}
+                        <div class="row pt-3 ">
+                        
+                          <span class="col-6 meracolor mfont mb-2" >Subtotal</span>
+                          <span class="col-6 infont text-end"></span>
+                        </div>
+                      
+                        <div class="row border-top">
+                         <span class="col-6 mt-2  mfont ">Total Amount</span>
+                         <span class="col-6 mt-2 text-end infont">₹{{ totalAmount }}</span>
+                        </div>
+
+                      
+            <div>
+
+            </div>
+
+
+        
+        </div>
+        <!-- ----payment---------- -->
+        <div class="border shadow-sm pb-3 mt-1">
+               <div class="row "> 
+                <h5 class="text-center pt-2" style="color: #2f2d51;">Payment</h5>
+               </div>
+
+               <div class="row">
+                      <div class="col-12 ms-3 sfont">Payment Mode</div>
+                     
+               </div>
+               <div class="row pt-1 infont">
+                <div class="col-12 ms-4 ">
+                  <span >Online(UPI/Debit/Credit/Net Banking)</span>
+                  <input class="infont" type="radio"  name="paymentMode"  value="UPI">           
+                 </div>
+                <div class="col-12 ms-4 ">
+                  <span>Cash on Delivery</span>
+                  <input class="infont" type="radio"  name="paymentMode" value="Net Banking">
+                </div>
+               </div>
+               
+               <div class="row mt-3 ">
+                  
+                <div class="col-6 ms-3 sfont">Apply Coupon </div>
+               
+                 <input class="col-4 " style="border: 1px solid gray; border-radius: 6px;" type="text" placeholder="coupon code">
+                
+               </div> 
+
+               <div class="row mt-4">
+                <div class=" text-center"> <input class="btn btn-outline-primary infont " type="submit" value="checkout"></div>
+               </div>
+              
+        </div>
+          
+        </div>
+      </form>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+
+

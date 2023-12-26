@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .custom-input-container {
+      position: relative;
+      margin: 20px;
+    }
+
+    .custom-input {
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .custom-placeholder {
+      position: absolute;
+      top: 5px;
+      left: 10px;
+      font-size: 12px;
+      color: #888;
+      pointer-events: none;
+      transition: top 0.3s, font-size 0.3s;
+    }
+
+    .custom-input:focus + .custom-placeholder,
+    .custom-input:valid + .custom-placeholder {
+      top: -15px;
+      font-size: 12px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="custom-input-container">
+    <input type="text" class="custom-input" id="customInput" required>
+    <label for="customInput" class="custom-placeholder">Placeholder Text</label>
+  </div>
+
+</body>
+</html>

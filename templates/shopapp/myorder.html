@@ -1,0 +1,33 @@
+{% extends 'shopapp/base.html'%} 
+
+{% block content %}
+
+    <div class="container-lg shadow-sm border-start border-end border-bottom">
+                
+        <div class="row border-bottom shadow-sm">
+            <div class="col-12 text-center p-3 "><h3>My Orders</h3></div>
+        </div>
+        {% for x in myorder %}
+          {% for p in data %}
+        <div class="row border-bottom  pb-4">
+            <div class="col-3 mt-4 text-center "><img  src="{{p.product_image.url}}" style="height: 120px;" alt="">
+            </div>
+
+            <div class="col-3 mt-4">
+                  <p style="font-weight: 700;">{{p.product_name}}</p>
+                  <p style="font-weight: 600;">{{p.product_title}}</p>
+                  <p style="font-weight: 500;">₹  {{p.product_price}}</p>
+            </div>
+            <div class="col-3 mt-4">
+                  
+                    <p>Order Date:</p> <span>{{ x.orederDate}}</span>
+            </div>
+            <div class="col-3 mt-4">
+                  {% if %}
+                
+        </div>
+         </div>
+            {% endfor %}
+        {% endfor%}
+    </div>
+{% endblock %}

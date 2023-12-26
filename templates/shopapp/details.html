@@ -1,0 +1,78 @@
+{% extends 'shopapp/base.html'%} 
+
+{% block content%}
+
+<div class="container m-5">
+   
+   <div class="row">
+  
+      <div class="col-4"><img src="{{data.product_image.url}}" class="shadow" style="width:100%" height="500px" alt=""></div>
+      <div class="col-8">
+        <h2>{{data.product_title}}</h2>
+        <p>{{data.product_price}}</p>
+        <p>{{data.product_name}}</p>
+        <p>
+            Introducing Dove Men Anti Dandruff 2-in-1 shampoo + conditioner which is specially designed to care for mens hair needs. Mens hair is exposed to everyday pollution and dirt which can make it greasy and more prone to dandruff. Dove Men Anti-Dandruff shampoo + conditioner with clinically proven ZPTO targets dandruff at source and removes up to 100% visible flakes*. This mens Anti-Dandruff shampoo helps moisturise and cleanse the scalp and hair, leaving it feeling smooth and upto 100% visible flake-free*. Its menthol formula energises the scalp and provides a cooling sensation with every shower. This easy-to-use product is suitable for daily application. Just squeeze some product into your palm. Massage it thoroughly into your hair and rinse it off with water. It will give you refreshed, up to 2X smoother hair^. Gentle on the hair and scalp, this shampoo deeply revitalises hair. Established by experts, our revitalising menthol anti-dandruff shampoo for men is an essential addition to your hair care routine. This dual impact shampoo cools and cleans the scalp ensuring you stay refreshed . Dove Men Anti-Dandruff shampoo is carefully created without any parabens and dyes It is suitable for all hair types.*No visible flakes with regular product use, effect may vary with person ^Based on lab test vs non-conditioning shampoo</p>
+
+            <div class="btn-group d-flex" style="width: 50%;">
+              <form method="post" action="../add_to_cart/">
+                {% csrf_token %}
+
+                <input type="hidden" name="user" value="{{user.id}}">
+                <input type="hidden" name="productId" value="{{data.id}}">
+                
+                <input type="hidden" name="qty" value="1">
+
+                <input type="submit" name="btncart" value="Add To Cart" class="btn btn-primary">
+
+              </form>
+
+                <a href="addtocart/" class="btn btn-warning">By Now</a>
+            </div>
+      </div>
+   </div> 
+    
+
+   <!-- ------------------  related product ------------------------------------- -->
+    
+    <h2 >----Related Product---- </h2>
+    
+    <div class="row">
+      {% for x in related %}
+      {% if x.id != data.id %} {# Assuming data is the current product being displayed #}
+
+      <div class="col-lg   pt-4">
+         <div class="card shadow-sm bg-body text-center rounded" style="width: 16rem;">
+           <a href="../details/{{x.id}}"><img src="{{x.product_image.url}}" class="card-img-top p-3 shadow" style="height: 200px; width: 200px;" alt="{{x.product_name}}"></a>
+           <div class="card-body text-center ">
+             <h5 class="">{{x.product_name}}</h5>
+             <p class="">{{x.product_title}}</p>
+             <p class=" "><i class="fa-solid fa-indian-rupee-sign">{{x.product_price}} /-</i></p>
+             <p>
+               <form method="post" action="../add_to_cart/">
+                 {% csrf_token %}
+
+                 <input type="hidden" name="user" value="{{user.id}}">
+                 <input type="hidden" name="productId" value="{{x.id}}">
+                 
+                 <input type="hidden" name="qty" value="1">
+
+                 <input type="submit" name="btncart" value="Add To Cart" class="btn btn-primary">
+
+               </form>
+
+             </p>
+            </div>
+        
+           </div>
+       </div>
+       {% endif %}
+       {% endfor %}
+    </div>
+   
+ 
+  
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'shopapp/base.html'%} 
+
+
+{% block content%}
+   <div class="container ">
+     <div class="row">
+      {% for x in data %}
+          <div class="col-lg p-2">
+                 
+    <div class="card"  style="width: 10rem;" >
+   <a href="../products/{{x.id}}" class="rounded-cirlce"> <img src="{{x.category_image.url}}" class="card-img-top" alt="..."></a>
+    <div class="card-body">
+      <p class="card-title text-center " >{{x.category_name}}</p>
+    </div>
+  </div>
+
+          </div>
+          {% endfor %}
+     </div>
+   </div> 
+
+{% endblock %}
